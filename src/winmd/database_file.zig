@@ -3,8 +3,6 @@
 pub const DatabaseFile = struct {
     bytes: []const u8,
     pub fn fromBytes(bytes: []const u8) DatabaseFile {
-        return DatabaseFile{
-            .bytes = bytes
-        };
+        return DatabaseFile{ .bytes = bytes };
     }
 };
