@@ -1,0 +1,17 @@
+name: test_build
+
+on:
+  pull_request:
+    branches: [ master ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Prerequisites (Zig)
+        run: snap install zig --classic --beta
+      - name: Run Zig Tests
+        run: zig build test
