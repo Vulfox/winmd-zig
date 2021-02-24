@@ -12,6 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install Prerequisites (Zig)
-        run: snap install zig --classic --beta
+        run: sudo snap install zig --classic --beta
       - name: Run Zig Tests
         run: zig build test
