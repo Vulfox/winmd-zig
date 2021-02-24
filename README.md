@@ -15,3 +15,6 @@ I am a zig newb and this port of the windows-rs was to help get a better feel fo
 - https://github.com/marlersoft/zigwin32gen
   - This repo is doing something similar to what this repo is attempting to accomplish longterm. It is much further along in the development process and will most likely be user ready before this one.
   - Differences: zigwin32gen repo currently appears to provide only Win32 bindings, where as as this repo is attempting to provide both Win32 and WinRT bindings.
+- https://github.com/microsoft/winmd
+- https://github.com/microsoft/win32metadata
+- https://github.com/microsoft/windows-rs
