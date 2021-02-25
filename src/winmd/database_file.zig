@@ -1,6 +1,6 @@
 //! This is the meta data generator for parsing winmd files
 const std = @import("std");
-const stdO = @import("std_overrides.zig");
+usingnamespace @import("parse_helpers.zig");
 usingnamespace @import("../winmd.zig");
 
 const mem = @This();
@@ -539,36 +539,6 @@ pub const DatabaseFile = struct {
         return self;
     }
 };
-
-// A set of helper functions to help facilitate the parsing of winmd bytes
-
-// winmd files are little endian based
-fn copyAs(comptime T: type, bytes: []const u8, offset: u32) T {
-    return std.mem.readIntSliceLittle(T, bytes[offset .. offset + stdO.sizeOf(T)]);
-}
-
-// Can't use @bitCast due to size validation with packed structs using @sizeOf
-fn viewAs(comptime T: type, bytes: []const u8, offset: u32) T {
-    return viewAsSliceOf(T, bytes, offset, 1)[0];
-}
-
-fn viewAsSliceOf(comptime T: type, bytes: []const u8, offset: u32, len: u32) []const T {
-    const aligned_bytes align(@alignOf(T)) = bytes[offset..(offset + stdO.sizeOf(T) * len)];
-    return stdO.bytesAsSlice(T, aligned_bytes);
-}
-
-fn viewAsStr(bytes: []const u8, offset: u32) []const u8 {
-    var buf = bytes[offset..];
-    var index: usize = 0;
-    for (buf) |c, i| {
-        if (c == 0) {
-            index = i;
-            break;
-        }
-    }
-
-    return bytes[offset .. offset + index];
-}
 
 fn sectionFromRva(sections: []const ImageSectionHeader, rva: u32) !ImageSectionHeader {
     for (sections) |s| {

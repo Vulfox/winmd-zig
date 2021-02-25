@@ -5,7 +5,7 @@ const testing = std.testing;
 
 const winmd = @import("winmd.zig");
 
-test "init TypeReader with no files" {
+test "TypeReader with no files" {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer {
         const leaked = gpa.deinit();
@@ -19,7 +19,7 @@ test "init TypeReader with no files" {
     testing.expect(reader.files.items.len == 2);
 }
 
-test "init TypeReader with specified file" {
+test "TypeReader with specified file" {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer {
         const leaked = gpa.deinit();
@@ -37,10 +37,12 @@ test "init TypeReader with specified file" {
 
     testing.expect(reader.files.items.len == 1);
 
-    const foundation_database_file = reader.files.items[0];
-    testing.expect(foundation_database_file.blobs == 19360);
-    testing.expect(foundation_database_file.strings == 14148);
-    testing.expect(foundation_database_file.tables[@enumToInt(winmd.TableIndex.TypeDef)].row_count == 100);
+    // verify type layout, mostly mimicing what is laid out here:
+    // https://github.com/microsoft/winmd-rs/blob/master/tests/stringable.rs
+    const def = reader.findTypeDef("Windows.Foundation", "IStringable");
+    testing.expect(def != null);
+    testing.expect(std.mem.eql(u8, def.?.namespace(), "Windows.Foundation"));
+    testing.expect(std.mem.eql(u8, def.?.name(), "IStringable"));
 }
 
 test "read DatabaseFile fromBytes" {
@@ -58,7 +60,6 @@ test "read DatabaseFile fromBytes" {
     const foundation_database_file = try winmd.DatabaseFile.fromBytes(foundation_file);
     testing.expect(foundation_database_file.blobs == 19360);
     testing.expect(foundation_database_file.strings == 14148);
-    //testing.expect(foundation_database_file.tables[@enumToInt(winmd.TableIndex.TypeDef)].row_count == 100);
 
     // expected table layout
     const tables = [_]winmd.TableData{
