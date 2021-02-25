@@ -1,5 +1,5 @@
 # winmd-zig
-[![CI Actions Status](https://github.com/Vulfox/winmd-zig/workflows/CI/badge.svg)](https://github.com/Vulfox/winmd-zig/actions)
+[![CI](https://github.com/Vulfox/winmd-zig/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/Vulfox/winmd-zig/actions/workflows/test.yml)
 
 The goal of this library is to provide a way for a pure zig automation of reading/generating windows api projections in the same way that [windows-rs](https://github.com/microsoft/windows-rs) provides them today.
 
